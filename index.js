@@ -17,7 +17,14 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("a user connected: ", socket.id);
+
+  socket.on("create-meet", (callback) => {
+    const meetId = Math.random().toString(36).substring(7);
+    callback(meetId);
+  });
+
+  // socket.on("join-meet", (meetId, callback) => {});
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
