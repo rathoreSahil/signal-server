@@ -25,6 +25,14 @@ io.on("connection", (socket) => {
     callback({ meetId });
   });
 
+  socket.on("signal", (meetId, message) => {
+    socket.to(meetId).emit("signal", message);
+  });
+
+  socket.on("hang-up", (meetId) => {
+    socket.to(meetId).emit("hang-up");
+  });
+
   socket.on("join-meet", (meetId, callback) => {
     socket.join(meetId);
     callback({
