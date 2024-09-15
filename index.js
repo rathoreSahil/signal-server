@@ -21,7 +21,6 @@ io.on("connection", (socket) => {
 
   socket.on("create-meet", (callback) => {
     const meetId = Math.random().toString(36).substring(7);
-    socket.join(meetId);
     callback({ meetId });
   });
 
@@ -29,15 +28,12 @@ io.on("connection", (socket) => {
     socket.to(meetId).emit("signal", message);
   });
 
-  socket.on("hang-up", (meetId) => {
-    socket.to(meetId).emit("hang-up");
+  socket.on("join-room", (meetId) => {
+    socket.join(meetId);
   });
 
-  socket.on("join-meet", (meetId, callback) => {
-    socket.join(meetId);
-    callback({
-      status: "success",
-    });
+  socket.on("hang-up", (meetId) => {
+    socket.to(meetId).emit("hang-up");
   });
 
   socket.on("disconnect", () => {
